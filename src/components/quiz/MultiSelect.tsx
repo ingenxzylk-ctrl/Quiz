@@ -21,7 +21,7 @@ export default function MultiSelect({ options, value, onChange }: MultiSelectPro
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       {options.map((opt) => {
         const selected = value.includes(opt.id);
         return (
@@ -29,15 +29,13 @@ export default function MultiSelect({ options, value, onChange }: MultiSelectPro
             key={opt.id}
             type="button"
             onClick={() => toggle(opt.id)}
-            className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all flex items-center gap-3 ${
-              selected
-                ? "border-emerald-600 bg-emerald-50 text-emerald-900"
-                : "border-gray-200 bg-white hover:border-emerald-300 text-gray-700"
+            className={`option-card w-full text-left px-4 py-3.5 flex items-center gap-3.5 ${
+              selected ? "option-card-selected" : ""
             }`}
           >
             <div
-              className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${
-                selected ? "border-emerald-600 bg-emerald-600" : "border-gray-300"
+              className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
+                selected ? "border-[#1a5c45] bg-[#1a5c45]" : "border-[#d6d3d1] bg-white"
               }`}
             >
               {selected && (
@@ -46,7 +44,9 @@ export default function MultiSelect({ options, value, onChange }: MultiSelectPro
                 </svg>
               )}
             </div>
-            <span className="font-medium">{opt.label}</span>
+            <span className={`font-medium text-[0.9375rem] ${selected ? "text-[#1a5c45]" : "text-[#1c1917]"}`}>
+              {opt.label}
+            </span>
           </button>
         );
       })}

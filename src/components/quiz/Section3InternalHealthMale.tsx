@@ -21,6 +21,8 @@ import MultiSelect from "./MultiSelect";
 import PrivacyNotice from "./PrivacyNotice";
 import ContinueButton from "./ContinueButton";
 import { trackQuestionView } from "@/lib/analytics";
+import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
+import { TextInput } from "@/components/ui/FormField";
 
 const STEPS = [
   "sleep_cycle",
@@ -72,12 +74,12 @@ export default function Section3InternalHealthMale({ onComplete }: { onComplete:
       subtitle="Your overall health plays a big role in hair wellness."
       onBack={step > 0 ? () => setStep(step - 1) : undefined}
       showBack={step > 0}
+      progress={<ProgressBar currentSection={2} />}
     >
-      <ProgressBar currentSection={2} sectionLabel="Internal Health" />
-
       {step === 0 && <PrivacyNotice accepted={privacyAccepted} onAccept={setPrivacyAccepted} />}
 
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{TITLES[currentQ]}</h2>
+      <QuizCard>
+      <QuestionHeading title={TITLES[currentQ]} />
 
       {currentQ === "sleep_cycle" && (
         <SingleSelect options={SLEEP_OPTIONS} value={getAnswer("sleep_cycle") as string}
@@ -92,8 +94,8 @@ export default function Section3InternalHealthMale({ onComplete }: { onComplete:
           <MultiSelect options={MALE_CONDITIONS} value={(getAnswer("health_conditions") as string[]) || []}
             onChange={(v) => setAnswer({ section: "internal_health", question_id: "health_conditions", gender_path: "male", value: v })} />
           {((getAnswer("health_conditions") as string[]) || []).includes("other") && (
-            <input type="text" value={otherCondition} onChange={(e) => setOtherCondition(e.target.value)}
-              placeholder="Please specify" className="w-full mt-3 px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-emerald-500" />
+            <TextInput type="text" value={otherCondition} onChange={(e) => setOtherCondition(e.target.value)}
+              placeholder="Please specify" className="mt-3" />
           )}
         </>
       )}
@@ -119,6 +121,7 @@ export default function Section3InternalHealthMale({ onComplete }: { onComplete:
       )}
 
       <ContinueButton onClick={handleContinue} disabled={!canContinue()} />
+      </QuizCard>
     </QuizLayout>
   );
 }
