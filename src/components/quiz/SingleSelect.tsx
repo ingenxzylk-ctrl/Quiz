@@ -8,24 +8,36 @@ interface SingleSelectProps {
 
 export default function SingleSelect({ options, value, onChange }: SingleSelectProps) {
   return (
-    <div className="space-y-2">
-      {options.map((opt) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => onChange(opt.id)}
-          className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all ${
-            value === opt.id
-              ? "border-emerald-600 bg-emerald-50 text-emerald-900"
-              : "border-gray-200 bg-white hover:border-emerald-300 text-gray-700"
-          }`}
-        >
-          <span className="font-medium">{opt.label}</span>
-          {opt.description && (
-            <span className="block text-sm text-gray-500 mt-0.5">{opt.description}</span>
-          )}
-        </button>
-      ))}
+    <div className="space-y-2.5">
+      {options.map((opt) => {
+        const selected = value === opt.id;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onChange(opt.id)}
+            className={`option-card w-full text-left px-4 py-3.5 flex items-center gap-3.5 ${
+              selected ? "option-card-selected" : ""
+            }`}
+          >
+            <div
+              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                selected ? "border-[#1a5c45] bg-[#1a5c45]" : "border-[#d6d3d1]"
+              }`}
+            >
+              {selected && <div className="w-2 h-2 rounded-full bg-white" />}
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className={`block font-medium text-[0.9375rem] ${selected ? "text-[#1a5c45]" : "text-[#1c1917]"}`}>
+                {opt.label}
+              </span>
+              {opt.description && (
+                <span className="block text-sm text-[#78716c] mt-0.5">{opt.description}</span>
+              )}
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }

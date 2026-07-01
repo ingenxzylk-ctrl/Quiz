@@ -17,6 +17,7 @@ import SingleSelect from "./SingleSelect";
 import MultiSelect from "./MultiSelect";
 import ContinueButton from "./ContinueButton";
 import { trackQuestionView } from "@/lib/analytics";
+import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
 
 const STEPS = [
   "hair_volume",
@@ -62,9 +63,10 @@ export default function Section2HairHealthFemale({ onComplete }: { onComplete: (
       subtitle="Tell us about your hair fall experience."
       onBack={step > 0 ? () => setStep(step - 1) : undefined}
       showBack={step > 0}
+      progress={<ProgressBar currentSection={1} />}
     >
-      <ProgressBar currentSection={1} sectionLabel="Hair Health" />
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{TITLES[currentQ]}</h2>
+      <QuizCard>
+      <QuestionHeading title={TITLES[currentQ]} />
 
       {currentQ === "hair_volume" && (
         <ImageSelect
@@ -116,6 +118,7 @@ export default function Section2HairHealthFemale({ onComplete }: { onComplete: (
       )}
 
       <ContinueButton onClick={handleContinue} disabled={!canContinue()} />
+      </QuizCard>
     </QuizLayout>
   );
 }

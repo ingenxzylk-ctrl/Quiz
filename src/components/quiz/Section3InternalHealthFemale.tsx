@@ -21,6 +21,7 @@ import MultiSelect from "./MultiSelect";
 import PrivacyNotice from "./PrivacyNotice";
 import ContinueButton from "./ContinueButton";
 import { trackQuestionView } from "@/lib/analytics";
+import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
 
 const STEPS = [
   "iron_level",
@@ -75,12 +76,12 @@ export default function Section3InternalHealthFemale({ onComplete }: { onComplet
       subtitle="Understanding your internal health helps identify root causes."
       onBack={step > 0 ? () => setStep(step - 1) : undefined}
       showBack={step > 0}
+      progress={<ProgressBar currentSection={2} />}
     >
-      <ProgressBar currentSection={2} sectionLabel="Internal Health" />
-
       {step === 0 && <PrivacyNotice accepted={privacyAccepted} onAccept={setPrivacyAccepted} />}
 
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{TITLES[currentQ]}</h2>
+      <QuizCard>
+      <QuestionHeading title={TITLES[currentQ]} />
 
       {currentQ === "iron_level" && (
         <SingleSelect options={FEMALE_IRON} value={getAnswer("iron_level") as string}
@@ -124,6 +125,7 @@ export default function Section3InternalHealthFemale({ onComplete }: { onComplet
       )}
 
       <ContinueButton onClick={handleContinue} disabled={!canContinue()} />
+      </QuizCard>
     </QuizLayout>
   );
 }

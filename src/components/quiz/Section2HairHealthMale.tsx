@@ -15,6 +15,7 @@ import SingleSelect from "./SingleSelect";
 import HopeMessage from "./HopeMessage";
 import ContinueButton from "./ContinueButton";
 import { trackQuestionView } from "@/lib/analytics";
+import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
 
 export default function Section2HairHealthMale({ onComplete }: { onComplete: () => void }) {
   const { state, setAnswer, getAnswer, goToSection } = useQuiz();
@@ -84,10 +85,10 @@ export default function Section2HairHealthMale({ onComplete }: { onComplete: () 
       subtitle="Help us understand your hair loss pattern."
       onBack={step > 0 ? () => { setStep(step - 1); setShowHope(false); } : undefined}
       showBack={step > 0}
+      progress={<ProgressBar currentSection={1} />}
     >
-      <ProgressBar currentSection={1} sectionLabel="Hair Health" />
-
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{titles[currentQ]}</h2>
+      <QuizCard>
+      <QuestionHeading title={titles[currentQ]} />
 
       {currentQ === "norwood_stage" && (
         <>
@@ -130,6 +131,7 @@ export default function Section2HairHealthMale({ onComplete }: { onComplete: () 
       )}
 
       <ContinueButton onClick={handleContinue} disabled={!canContinue()} />
+      </QuizCard>
     </QuizLayout>
   );
 }
