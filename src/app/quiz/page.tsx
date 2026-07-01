@@ -9,6 +9,7 @@ import Section3InternalHealthMale from "@/components/quiz/Section3InternalHealth
 import Section3InternalHealthFemale from "@/components/quiz/Section3InternalHealthFemale";
 import Section4ScalpAssessment from "@/components/quiz/Section4ScalpAssessment";
 import ResultsPage from "@/components/quiz/ResultsPage";
+import { AIAnalysisResult } from "@/types/quiz";
 
 function QuizFlow() {
   const { state, gender, generateQuizResult, saveProgress } = useQuiz();
@@ -16,11 +17,11 @@ function QuizFlow() {
   const [savedUrl, setSavedUrl] = useState<string | null>(null);
 
   const handleSectionComplete = useCallback(() => {
-    // Section transitions handled by goToSection in each component
+    // Section transitions handled by goToSection in each component.
   }, []);
 
-  const handleScalpComplete = useCallback(() => {
-    generateQuizResult();
+  const handleFinish = useCallback((analysis?: AIAnalysisResult) => {
+    generateQuizResult(analysis);
     setShowResults(true);
   }, [generateQuizResult]);
 
@@ -60,12 +61,13 @@ function QuizFlow() {
 
   if (section === 2) {
     if (gender === "male") return <Section3InternalHealthMale onComplete={handleSectionComplete} />;
-    if (gender === "female") return <Section3InternalHealthFemale onComplete={handleSectionComplete} />;
+    // Women skip the scalp scan (no image analysis) and finish here.
+    if (gender === "female") return <Section3InternalHealthFemale onComplete={handleFinish} />;
     return null;
   }
 
   if (section === 3) {
-    return <Section4ScalpAssessment onComplete={handleScalpComplete} />;
+    return <Section4ScalpAssessment onComplete={handleFinish} />;
   }
 
   return null;

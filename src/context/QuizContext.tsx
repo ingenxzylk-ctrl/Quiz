@@ -40,7 +40,7 @@ interface QuizContextValue {
   nextStep: () => void;
   prevStep: () => void;
   setStep: (step: number) => void;
-  generateQuizResult: () => QuizResult;
+  generateQuizResult: (aiOverride?: AIAnalysisResult | null) => QuizResult;
   saveProgress: () => Promise<string | null>;
   loadState: (state: QuizState) => void;
   totalSections: number;
@@ -148,10 +148,19 @@ export function QuizProvider({
     setState((prev) => ({ ...prev, currentStep: step, lastUpdatedAt: new Date().toISOString() }));
   }, []);
 
-  const generateQuizResult = useCallback(() => {
+  const generateQuizResult = useCallback((aiOverride?: AIAnalysisResult | null) => {
     if (!gender) throw new Error("Gender required for result generation");
-    const result = generateResult(state.answers, gender, state.aiAnalysis);
-    setState((prev) => ({ ...prev, result, lastUpdatedAt: new Date().toISOString() }));
+    // The scalp analysis is set via setAIAnalysis right before this runs, so
+    // state.aiAnalysis can still be stale in the same render tick. Accept an
+    // explicit override so the freshly-computed AI result is used immediately.
+    const ai = aiOverride !== undefined ? aiOverride : state.aiAnalysis;
+    const result = generateResult(state.answers, gender, ai);
+    setState((prev) => ({
+      ...prev,
+      aiAnalysis: aiOverride !== undefined ? aiOverride : prev.aiAnalysis,
+      result,
+      lastUpdatedAt: new Date().toISOString(),
+    }));
     return result;
   }, [gender, state.answers, state.aiAnalysis]);
 

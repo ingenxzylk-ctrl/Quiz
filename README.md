@@ -21,7 +21,7 @@ A multi-step, gender-branching diagnostic quiz that collects user profile data, 
 - **Frontend**: Next.js 16, React, TypeScript, Tailwind CSS
 - **Image capture**: react-webcam + native file input with `capture="environment"`
 - **Backend**: Next.js API routes with in-memory session store (swap for DB in production)
-- **AI**: Mock CNN classifier with structured output (ready to swap for hosted vision API)
+- **AI**: Google Gemini vision model (`gemini-2.5-flash`) for scalp stage detection, with a deterministic mock fallback when no API key is configured
 
 ## Getting Started
 
@@ -32,6 +32,29 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to start the assessment.
 
+## Environment Variables
+
+Scalp stage detection uses Google's Gemini vision model when an API key is
+configured. Create a `.env.local` file in the project root:
+
+```bash
+# Required for real AI scalp analysis (get one at https://aistudio.google.com/apikey)
+GEMINI_API_KEY=your_api_key_here
+
+# Optional — override the default vision model (defaults to gemini-2.5-flash)
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+If `GEMINI_API_KEY` is **not** set, the app automatically falls back to a
+deterministic mock classifier so the flow still works end-to-end during local
+development. The key is only used server-side (in the `/api/scalp/analyze`
+route) and is never exposed to the browser.
+
+**Scalp scan applies to the male path only.** Women skip the scalp photo
+capture entirely — their results are generated from the questionnaire and
+self-reported Ludwig pattern — so no female hair image is ever captured or sent
+to the AI model.
+
 ## Quiz Architecture
 
 ```
@@ -40,8 +63,8 @@ START
       └─ Gender selected → routes all subsequent sections
  └─ Section 2: Hair Health (Male / Female path)
  └─ Section 3: Internal Health (Male / Female path)
- └─ Section 4: Scalp Assessment (image upload/capture + AI)
- └─ RESULT: Personalized report
+ └─ Section 4: Scalp Assessment (image upload/capture + AI) — MALE ONLY
+ └─ RESULT: Personalized report (female path skips Section 4)
 ```
 
 ## Answer Schema
@@ -69,6 +92,6 @@ Every answer is tagged with:
 ## Production Notes
 
 - Replace in-memory `session-store` with encrypted database storage
-- Swap mock `scalp-analysis` and `moderation` modules with hosted vision APIs
+- `scalp-analysis` uses Gemini vision when `GEMINI_API_KEY` is set; swap the mock `moderation` module with a hosted safety/vision API
 - Integrate Twilio/WhatsApp Business API for OTP verification
 - Add proper image storage (S3) instead of base64 in session state

@@ -154,7 +154,13 @@ function reconcileStages(
   gender: Gender
 ): { finalStage: string; mismatch: boolean; lowConfidence: boolean } {
   if (!ai) {
-    return { finalStage: selfReported, mismatch: false, lowConfidence: false };
+    // No AI image analysis (e.g. female flow skips the scalp scan) — classify
+    // from the self-reported answer alone using a friendly stage label.
+    const finalStage =
+      gender === "male"
+        ? `Norwood Stage ${selfReported}`
+        : `Ludwig Stage ${["I", "II", "III"][femaleStageToNumber(selfReported) - 1] || "II"}`;
+    return { finalStage, mismatch: false, lowConfidence: false };
   }
 
   if (ai.lowConfidence) {

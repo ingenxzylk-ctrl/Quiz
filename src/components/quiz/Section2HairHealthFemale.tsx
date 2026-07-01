@@ -63,7 +63,7 @@ export default function Section2HairHealthFemale({ onComplete }: { onComplete: (
       subtitle="Tell us about your hair fall experience."
       onBack={step > 0 ? () => setStep(step - 1) : undefined}
       showBack={step > 0}
-      progress={<ProgressBar currentSection={1} />}
+      progress={<ProgressBar currentSection={1} totalSections={3} />}
     >
       <QuizCard>
       <QuestionHeading title={TITLES[currentQ]} />
