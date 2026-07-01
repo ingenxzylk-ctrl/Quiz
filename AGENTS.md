@@ -2,7 +2,7 @@
 
 ## Cursor Cloud specific instructions
 
-This is a single Next.js 16 app (App Router, Turbopack) — the "Hair & Scalp Health Assessment Quiz". There is one service; no database, Docker, or external dependencies are required (sessions use an in-memory store in `src/lib/session-store.ts`, and AI/moderation are mocked).
+This is a single Next.js 16 app (App Router, Turbopack) — the "Hair & Scalp Health Assessment Quiz". There is one service; no database or Docker is required (sessions use an in-memory store in `src/lib/session-store.ts`, moderation is mocked, and scalp AI uses Gemini when `GEMINI_API_KEY` is set — otherwise a deterministic mock).
 
 Standard commands live in `package.json` (`dev`, `build`, `start`, `lint`). Run the dev server with `npm run dev` (serves on http://localhost:3000; `/` is the landing page, `/quiz` is the assessment). API routes: `/api/quiz/save`, `/api/quiz/resume/[id]`, `/api/scalp/moderate`, `/api/scalp/analyze`.
 
