@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <rect x="20" y="50" width="40" height="20" rx="4" fill="#E5E7EB"/>
+  <line x1="28" y1="45" x2="30" y2="52" stroke="#8B6914" stroke-width="1"/><line x1="33" y1="45" x2="35" y2="52" stroke="#8B6914" stroke-width="1"/><line x1="38" y1="45" x2="40" y2="52" stroke="#8B6914" stroke-width="1"/><line x1="43" y1="45" x2="45" y2="52" stroke="#8B6914" stroke-width="1"/><line x1="48" y1="45" x2="50" y2="52" stroke="#8B6914" stroke-width="1"/>
+  <text x="40" y="72" text-anchor="middle" font-size="7" fill="#666">~20 strands</text>
+</svg>
