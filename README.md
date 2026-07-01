@@ -21,14 +21,25 @@ A multi-step, gender-branching diagnostic quiz that collects user profile data, 
 - **Frontend**: Next.js 16, React, TypeScript, Tailwind CSS
 - **Image capture**: react-webcam + native file input with `capture="environment"`
 - **Backend**: Next.js API routes with in-memory session store (swap for DB in production)
-- **AI**: Mock CNN classifier with structured output (ready to swap for hosted vision API)
+- **AI**: Google Gemini Vision (`gemini-2.0-flash`) for scalp staging and image moderation
 
 ## Getting Started
 
 ```bash
 npm install
+cp .env.example .env.local
+# Add your Gemini API key from https://aistudio.google.com/apikey
 npm run dev
 ```
+
+### Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | Yes (for real AI) | Google AI Studio API key |
+| `GEMINI_MODEL` | No | Model id (default: `gemini-2.0-flash`) |
+
+Without `GEMINI_API_KEY`, the app falls back to heuristic mocks for local development.
 
 Open [http://localhost:3000](http://localhost:3000) to start the assessment.
 
@@ -69,6 +80,6 @@ Every answer is tagged with:
 ## Production Notes
 
 - Replace in-memory `session-store` with encrypted database storage
-- Swap mock `scalp-analysis` and `moderation` modules with hosted vision APIs
+- Gemini API key must be set in production (`GEMINI_API_KEY`)
 - Integrate Twilio/WhatsApp Business API for OTP verification
-- Add proper image storage (S3) instead of base64 in session state
+- Add proper image storage (S3) instead of base64 in session state — pass URLs to Gemini for scale

@@ -32,6 +32,7 @@ export interface AIAnalysisResult {
   scale: "norwood" | "ludwig";
   mismatchWithSelfReport: boolean;
   lowConfidence: boolean;
+  reasoning?: string;
 }
 
 export interface ContributingFactor {
@@ -46,6 +47,7 @@ export interface QuizResult {
   selfReportedStage: string;
   aiPredictedStage: string | null;
   aiConfidence: number | null;
+  aiReasoning?: string | null;
   mismatchFlag: boolean;
   lowConfidence: boolean;
   contributingFactors: ContributingFactor[];

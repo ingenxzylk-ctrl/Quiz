@@ -106,6 +106,12 @@ export default function Section4ScalpAssessment({ onComplete }: { onComplete: ()
     });
 
     const analysis = await res.json();
+    if (!res.ok) {
+      setError(analysis.error || "Scalp analysis failed. Please try again.");
+      setStep("top");
+      return;
+    }
+
     setAIAnalysis(analysis);
 
     const images: ScalpImage[] = [

@@ -103,6 +103,12 @@ export default function ResultsPage({ result, userName, onSaveProgress }: Result
               ))}
             </div>
           )}
+
+          {result.aiReasoning && (
+            <p className="mt-4 text-sm text-[#57534e] leading-relaxed italic border-l-2 border-[#1a5c45]/30 pl-4">
+              {result.aiReasoning}
+            </p>
+          )}
         </div>
 
         {/* Outlook */}

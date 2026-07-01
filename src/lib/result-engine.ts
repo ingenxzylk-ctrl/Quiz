@@ -275,6 +275,7 @@ export function generateResult(
     selfReportedStage: selfReported,
     aiPredictedStage: aiAnalysis?.predictedStage ?? null,
     aiConfidence: aiAnalysis?.confidence ?? null,
+    aiReasoning: aiAnalysis?.reasoning ?? null,
     mismatchFlag: mismatch,
     lowConfidence,
     contributingFactors: factors.length > 0 ? factors : [{
