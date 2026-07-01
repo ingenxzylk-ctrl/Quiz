@@ -237,7 +237,10 @@ export async function analyzeScalpImages(
 ): Promise<ScalpAnalysisOutput> {
   const apiKey = process.env.GEMINI_API_KEY;
 
-  if (apiKey) {
+  // Product decision: only male scalp photos are sent to the AI model. Female
+  // results are derived from questionnaire answers, so the app flow never
+  // reaches here for women — this guard keeps that true for direct API calls too.
+  if (apiKey && input.gender === "male") {
     try {
       return await analyzeWithGemini(input, apiKey);
     } catch (err) {

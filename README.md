@@ -50,6 +50,11 @@ deterministic mock classifier so the flow still works end-to-end during local
 development. The key is only used server-side (in the `/api/scalp/analyze`
 route) and is never exposed to the browser.
 
+**Scalp scan applies to the male path only.** Women skip the scalp photo
+capture entirely — their results are generated from the questionnaire and
+self-reported Ludwig pattern — so no female hair image is ever captured or sent
+to the AI model.
+
 ## Quiz Architecture
 
 ```
@@ -58,8 +63,8 @@ START
       └─ Gender selected → routes all subsequent sections
  └─ Section 2: Hair Health (Male / Female path)
  └─ Section 3: Internal Health (Male / Female path)
- └─ Section 4: Scalp Assessment (image upload/capture + AI)
- └─ RESULT: Personalized report
+ └─ Section 4: Scalp Assessment (image upload/capture + AI) — MALE ONLY
+ └─ RESULT: Personalized report (female path skips Section 4)
 ```
 
 ## Answer Schema

@@ -6,13 +6,13 @@ import { useQuiz } from "@/context/QuizContext";
 import ProgressBar from "./ProgressBar";
 import QuizLayout from "./QuizLayout";
 import ContinueButton from "./ContinueButton";
-import { ScalpImage } from "@/types/quiz";
+import { AIAnalysisResult, ScalpImage } from "@/types/quiz";
 import { trackQuestionView } from "@/lib/analytics";
 import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
 
 type CaptureStep = "consent" | "guide" | "front" | "top" | "analyzing";
 
-export default function Section4ScalpAssessment({ onComplete }: { onComplete: () => void }) {
+export default function Section4ScalpAssessment({ onComplete }: { onComplete: (analysis?: AIAnalysisResult) => void }) {
   const { state, gender, setScalpConsent, setScalpImages, setAIAnalysis, getAnswer, scalpConsent: consent } = useQuiz();
   const [step, setStep] = useState<CaptureStep>("consent");
   const [frontImage, setFrontImage] = useState<string | null>(null);
@@ -113,7 +113,9 @@ export default function Section4ScalpAssessment({ onComplete }: { onComplete: ()
       { type: "top", dataUrl: top, moderated: true, moderationPassed: true },
     ];
     setScalpImages(images);
-    onComplete();
+    // Pass the fresh analysis so results reflect it without waiting for the
+    // setAIAnalysis state update to commit.
+    onComplete(analysis);
   };
 
   if (step === "consent") {
