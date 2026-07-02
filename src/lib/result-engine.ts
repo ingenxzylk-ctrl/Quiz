@@ -154,7 +154,11 @@ function reconcileStages(
   gender: Gender
 ): { finalStage: string; mismatch: boolean; lowConfidence: boolean } {
   if (!ai) {
-    return { finalStage: selfReported, mismatch: false, lowConfidence: false };
+    const finalStage =
+      gender === "male"
+        ? `Norwood Stage ${selfReported}`
+        : `Ludwig Stage ${["I", "II", "III"][femaleStageToNumber(selfReported) - 1] || "II"}`;
+    return { finalStage, mismatch: false, lowConfidence: false };
   }
 
   if (ai.lowConfidence) {

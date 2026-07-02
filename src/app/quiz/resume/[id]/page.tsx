@@ -11,14 +11,15 @@ import Section3InternalHealthMale from "@/components/quiz/Section3InternalHealth
 import Section3InternalHealthFemale from "@/components/quiz/Section3InternalHealthFemale";
 import Section4ScalpAssessment from "@/components/quiz/Section4ScalpAssessment";
 import ResultsPage from "@/components/quiz/ResultsPage";
+import { AIAnalysisResult } from "@/types/quiz";
 
 function QuizFlow() {
   const { state, gender, generateQuizResult, saveProgress } = useQuiz();
   const [showResults, setShowResults] = useState(false);
   const [savedUrl, setSavedUrl] = useState<string | null>(null);
 
-  const handleScalpComplete = () => {
-    generateQuizResult();
+  const handleFinish = (analysis?: AIAnalysisResult) => {
+    generateQuizResult(analysis);
     setShowResults(true);
   };
 
@@ -53,9 +54,9 @@ function QuizFlow() {
   }
   if (section === 2) {
     if (gender === "male") return <Section3InternalHealthMale onComplete={() => {}} />;
-    if (gender === "female") return <Section3InternalHealthFemale onComplete={() => {}} />;
+    if (gender === "female") return <Section3InternalHealthFemale onComplete={handleFinish} />;
   }
-  if (section === 3) return <Section4ScalpAssessment onComplete={handleScalpComplete} />;
+  if (section === 3) return <Section4ScalpAssessment onComplete={handleFinish} />;
   return null;
 }
 

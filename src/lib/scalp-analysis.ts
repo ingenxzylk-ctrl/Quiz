@@ -167,6 +167,11 @@ async function analyzeWithHeuristics(input: ScalpAnalysisInput): Promise<ScalpAn
 }
 
 export async function analyzeScalpImages(input: ScalpAnalysisInput): Promise<ScalpAnalysisOutput> {
+  // Only male scalp photos are analyzed by AI; female results use questionnaire answers.
+  if (input.gender !== "male") {
+    throw new Error("Scalp image analysis is only available for the male assessment path.");
+  }
+
   if (!isGeminiConfigured()) {
     console.warn("[ScalpAnalysis] GEMINI_API_KEY missing — using heuristic fallback");
     return analyzeWithHeuristics(input);

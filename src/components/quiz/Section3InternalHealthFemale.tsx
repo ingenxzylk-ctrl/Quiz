@@ -22,6 +22,7 @@ import PrivacyNotice from "./PrivacyNotice";
 import ContinueButton from "./ContinueButton";
 import { trackQuestionView } from "@/lib/analytics";
 import { QuizCard, QuestionHeading } from "@/components/ui/QuizCard";
+import { AIAnalysisResult } from "@/types/quiz";
 
 const STEPS = [
   "iron_level",
@@ -49,8 +50,8 @@ const TITLES: Record<string, string> = {
   balanced_diet: "Do you eat a balanced diet most days?",
 };
 
-export default function Section3InternalHealthFemale({ onComplete }: { onComplete: () => void }) {
-  const { state, setAnswer, getAnswer, goToSection, privacyAccepted, setPrivacyAccepted } = useQuiz();
+export default function Section3InternalHealthFemale({ onComplete }: { onComplete: (analysis?: AIAnalysisResult) => void }) {
+  const { state, setAnswer, getAnswer, privacyAccepted, setPrivacyAccepted } = useQuiz();
   const [step, setStep] = useState(0);
   const currentQ = STEPS[step];
 
@@ -67,7 +68,7 @@ export default function Section3InternalHealthFemale({ onComplete }: { onComplet
 
   const handleContinue = () => {
     if (step < STEPS.length - 1) setStep(step + 1);
-    else { goToSection(3); onComplete(); }
+    else onComplete();
   };
 
   return (
@@ -76,7 +77,7 @@ export default function Section3InternalHealthFemale({ onComplete }: { onComplet
       subtitle="Understanding your internal health helps identify root causes."
       onBack={step > 0 ? () => setStep(step - 1) : undefined}
       showBack={step > 0}
-      progress={<ProgressBar currentSection={2} />}
+      progress={<ProgressBar currentSection={2} totalSections={3} />}
     >
       {step === 0 && <PrivacyNotice accepted={privacyAccepted} onAccept={setPrivacyAccepted} />}
 
