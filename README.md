@@ -43,6 +43,19 @@ Without `GEMINI_API_KEY`, the app falls back to heuristic mocks for local develo
 
 Open [http://localhost:3000](http://localhost:3000) to start the assessment.
 
+> **Use `npm run dev` for development** — not `npm start`. Production mode (`next start`) does not support HMR WebSockets and will show `webpack-hmr` connection errors in the console.
+
+### Troubleshooting: HMR WebSocket errors
+
+If you see `WebSocket connection to 'ws://127.0.0.1:3000/_next/webpack-hmr' failed`:
+
+1. **Run the dev server** — `npm run dev` (not `npm start` after `npm run build`)
+2. **Restart after config changes** — stop the server and run `npm run dev` again
+3. **Cloud / port-forwarded IDE** — the dev script binds to `0.0.0.0` and `allowedDevOrigins` is preconfigured for Cursor and similar environments. Open the app using the forwarded URL shown in your IDE, not a stale tab
+4. **Harmless in most cases** — this only affects hot reload; the app still works. Hard-refresh (`Ctrl+Shift+R`) if the page seems stuck
+
+The `Unable to add filesystem: <illegal path>` message is a browser DevTools quirk, not an app bug.
+
 ## Quiz Architecture
 
 ```
